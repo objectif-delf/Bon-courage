@@ -1,0 +1,99 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================
+   THÈMES VISUELS — chaque thème redéfinit les mêmes variables.
+   Ajouter un thème : copier un bloc [data-theme="..."], changer
+   les valeurs, puis l'ajouter dans src/lib/themes.js.
+   ========================================================= */
+:root, [data-theme="clair"] {
+  --bg: #f6f1e7; --surface: #fffdf8; --surface-2: #efe8da;
+  --ink: #1b1f3b; --muted: #5d6280; --line: #ddd3c0;
+  --primary: #2343c7; --primary-ink: #ffffff; --accent: #e0483e;
+  --good: #1f8a52; --bad: #c8372d;
+  --radius: 18px; --shadow: 0 1px 2px rgba(27,31,59,.06), 0 6px 20px rgba(27,31,59,.06);
+  --border-w: 1px;
+  --font-display: 'Fraunces', Georgia, 'Noto Sans KR', serif;
+  --font-body: 'Atkinson Hyperlegible', 'Noto Sans KR', system-ui, sans-serif;
+  color-scheme: light;
+}
+[data-theme="sombre"] {
+  --bg: #0f1222; --surface: #181c33; --surface-2: #222844;
+  --ink: #eceefa; --muted: #a2a7c4; --line: #2e3558;
+  --primary: #7b93ff; --primary-ink: #0f1222; --accent: #ff7a6e;
+  --good: #4cd38a; --bad: #ff6b60;
+  --radius: 18px; --shadow: 0 6px 24px rgba(0,0,0,.35);
+  --border-w: 1px;
+  --font-display: 'Fraunces', Georgia, 'Noto Sans KR', serif;
+  --font-body: 'Atkinson Hyperlegible', 'Noto Sans KR', system-ui, sans-serif;
+  color-scheme: dark;
+}
+[data-theme="bd"] {
+  --bg: #fff3c4; --surface: #ffffff; --surface-2: #ffe27a;
+  --ink: #111111; --muted: #444444; --line: #111111;
+  --primary: #e8262b; --primary-ink: #ffffff; --accent: #1e6fe8;
+  --good: #149c3c; --bad: #e8262b;
+  --radius: 6px; --shadow: 5px 5px 0 #111111;
+  --border-w: 3px;
+  --font-display: 'Bangers', 'Comic Neue', 'Noto Sans KR', cursive;
+  --font-body: 'Comic Neue', 'Noto Sans KR', system-ui, sans-serif;
+  color-scheme: light;
+}
+[data-theme="cyber"] {
+  --bg: #07060f; --surface: #120f24; --surface-2: #1d1838;
+  --ink: #e9f7ff; --muted: #8e9bc0; --line: #3a2f6e;
+  --primary: #ff2bd6; --primary-ink: #07060f; --accent: #18f0ff;
+  --good: #39ff9f; --bad: #ff4d6d;
+  --radius: 4px; --shadow: 0 0 0 1px #3a2f6e, 0 0 18px rgba(255,43,214,.18);
+  --border-w: 1px;
+  --font-display: 'Orbitron', 'Rajdhani', 'Noto Sans KR', sans-serif;
+  --font-body: 'Rajdhani', 'Noto Sans KR', system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+html, body, #root { min-height: 100%; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 17px; line-height: 1.55;
+  -webkit-tap-highlight-color: transparent;
+}
+[data-theme="cyber"] body, body[data-theme="cyber"] {
+  background-image:
+    linear-gradient(rgba(24,240,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(24,240,255,.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+[data-theme="bd"] body, body[data-theme="bd"] {
+  background-image: radial-gradient(rgba(0,0,0,.12) 1.2px, transparent 1.3px);
+  background-size: 14px 14px;
+}
+.ko { font-family: var(--font-body), 'Noto Sans KR', sans-serif; }
+
+@layer components {
+  .card { @apply bg-surface rounded-card shadow-card p-4; border: var(--border-w) solid var(--line); }
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-card px-4 py-2.5 font-bold transition active:scale-[.97] disabled:opacity-40 disabled:pointer-events-none; border: var(--border-w) solid var(--line); background: var(--surface); color: var(--ink); min-height: 44px; }
+  .btn-primary { background: var(--primary); color: var(--primary-ink); border-color: var(--primary); }
+  .btn-ghost { background: transparent; border-color: transparent; }
+  .chip { @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-sm font-bold; background: var(--surface-2); color: var(--ink); }
+  .input { @apply w-full rounded-card px-3 py-2.5 bg-surface text-ink outline-none; border: var(--border-w) solid var(--line); min-height: 44px; }
+  .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent); }
+  .h-display { font-family: var(--font-display); letter-spacing: .01em; }
+  .word { cursor: pointer; border-radius: 4px; }
+  .word:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+}
+[data-theme="cyber"] .h-display { text-shadow: 0 0 12px rgba(255,43,214,.45); text-transform: uppercase; }
+[data-theme="cyber"] .btn-primary { box-shadow: 0 0 16px rgba(255,43,214,.5); }
+[data-theme="bd"] .h-display { letter-spacing: .04em; }
+
+.safe-bottom { padding-bottom: calc(env(safe-area-inset-bottom) + 76px); }
+@keyframes pop { 0% { transform: scale(.6); opacity: 0 } 60% { transform: scale(1.08) } 100% { transform: scale(1); opacity: 1 } }
+.anim-pop { animation: pop .35s ease-out both; }
+@keyframes shake { 0%,100% { transform: translateX(0) } 25% { transform: translateX(-6px) } 75% { transform: translateX(6px) } }
+.anim-shake { animation: shake .3s ease-in-out; }
+.flip { perspective: 1000px; }
+.flip-inner { transition: transform .5s; transform-style: preserve-3d; position: relative; }
+.flip-inner.flipped { transform: rotateY(180deg); }
+.flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.flip-back { transform: rotateY(180deg); position: absolute; inset: 0; }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
