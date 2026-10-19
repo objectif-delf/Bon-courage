@@ -5,6 +5,7 @@ import { DICTIONARY } from '../data/dictionary'
 import { LESSONS } from '../data/lessons'
 import { pick, shuffle, norm } from '../lib/text'
 import { useLang } from '../lib/i18n'
+import { upTo } from '../lib/levels'
 import { PageHeader, TimerPill, useCountdown } from '../components/ui'
 import { Flashcards } from '../components/Flashcards'
 import { QuizRunner } from '../components/Question'
@@ -43,16 +44,16 @@ function DeckPicker({ onBack }) {
   const { state } = useProgress()
   const { tr } = useLang()
   const [deck, setDeck] = useState(null)
+  const level = state.targetLevel || 'A2'
   const decks = useMemo(() => {
-    const glossary = LESSONS.flatMap((l) => l.glossary.map((g) => ({ front: g.fr, back: g.ko, key: `glo:${g.fr}` })))
+    const glossary = LESSONS.filter((l) => upTo(l.level, level)).flatMap((l) => l.glossary.map((g) => ({ front: g.fr, back: g.ko, key: `glo:${g.fr}` })))
     const byLevel = (lv) => DICTIONARY.filter((e) => e.level === lv).map((e) => ({ front: e.fr, back: e.ko, example: e.ex.fr, key: `dic:${e.fr}` }))
     return [
-      { id: 'glo', label: tr('Glossaires des leçons', '수업 용어집'), cards: glossary },
-      { id: 'b2', label: tr('Vocabulaire B2', 'B2 어휘'), cards: byLevel('B2') },
-      { id: 'b1', label: tr('Vocabulaire B1', 'B1 어휘'), cards: byLevel('B1') },
-      { id: 'a', label: tr('Vocabulaire A1-A2', 'A1-A2 어휘'), cards: [...byLevel('A1'), ...byLevel('A2')] },
+      { id: 'glo', label: tr(`Glossaires des leçons (jusqu'au ${level})`, `수업 용어집 (${level}까지)`), cards: glossary },
+      ...['A1', 'A2', 'B1', 'B2'].map((lv) => ({ id: lv, label: tr(`Vocabulaire ${lv}`, `${lv} 어휘`) + (lv === level ? ' ★' : ''), cards: byLevel(lv) }))
+        .sort((a, b) => (b.id === level) - (a.id === level))
     ]
-  }, [tr])
+  }, [tr, level])
   if (deck) return <div><button className="text-sm underline text-muted mb-3" onClick={() => setDeck(null)}>← {tr('Paquets', '카드 묶음')}</button><Flashcards cards={deck.cards} deckName={deck.label} onExit={() => setDeck(null)} /></div>
   return (
     <div>
@@ -75,9 +76,9 @@ function DeckPicker({ onBack }) {
 }
 
 /** Textes à trous construits à partir des exemples du dictionnaire. */
-function buildCloze() {
+function buildCloze(level) {
   const out = []
-  for (const e of DICTIONARY) {
+  for (const e of DICTIONARY.filter((x) => upTo(x.level, level))) {
     const base = norm(e.fr).replace(/^(le |la |les |l'|l |un |une |se |s')/, '')
     const candidates = [base, ...(e.forms || []).map(norm)].filter((x) => x && x.length > 1)
     const words = e.ex.fr.split(/(\s+|[.,;:!?«»]|['’])/)
@@ -93,8 +94,9 @@ function buildCloze() {
 function Cloze({ onBack }) {
   const [run, setRun] = useState(0)
   const { tr } = useLang()
+  const { state } = useProgress()
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const qs = useMemo(() => pick(buildCloze(), 10), [run])
+  const qs = useMemo(() => pick(buildCloze(state.targetLevel), 10), [run])
   return (
     <div>
       <button className="text-sm underline text-muted" onClick={onBack}>← {tr('Mini-jeux', '미니 게임')}</button>
@@ -117,8 +119,9 @@ function Speed({ onBack }) {
   const [q, setQ] = useState(null)
   const [flash, setFlash] = useState(null)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const nextQ = useCallback(() => {
-    const [target, ...others] = pick(DICTIONARY, 4)
+    const [target, ...others] = pick(DICTIONARY.filter((x) => upTo(x.level, state.targetLevel)), 4)
     const toKo = Math.random() < 0.6
     const options = shuffle([target, ...others])
     setQ({ target, options, toKo })

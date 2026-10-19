@@ -7,7 +7,8 @@ export default function Practice() {
   const { state } = useProgress()
   const { tr } = useLang()
   const items = [
-    { to: '/examen', icon: '📝', label: tr('Examens blancs DELF B2', 'DELF B2 모의고사'), desc: tr('Les 4 épreuves, chronométrées, avec note sur 100.', '4개 영역, 시간 제한, 100점 만점 채점.'), highlight: true },
+    { to: '/defi', icon: '☀️', label: tr('Défi du jour', '오늘의 도전'), desc: tr('5 questions de votre niveau, différentes chaque jour.', '내 단계의 5문제, 매일 바뀝니다.'), highlight: true },
+    { to: '/examen', icon: '📝', label: tr('Examens blancs', '모의고사'), desc: tr('A1 à C1, générés automatiquement, 4 épreuves notées sur 100.', 'A1~C1, 자동 생성, 4개 영역 100점 만점.') },
     { to: '/tests', icon: '🧪', label: tr('Tests de compétences', '실력 테스트'), desc: tr('Grammaire, vocabulaire, compréhension — par niveau.', '문법, 어휘, 독해 — 단계별.') },
     { to: '/jeux', icon: '🃏', label: tr('Mini-jeux', '미니 게임'), desc: tr('Cartes mémoire, textes à trous, quiz de rapidité.', '단어 카드, 빈칸 채우기, 스피드 퀴즈.') },
     { to: '/erreurs', icon: '🩹', label: tr('Revoir mes erreurs', '오답 노트'), desc: tr(`${state.mistakes.length} question(s) à retravailler.`, `다시 풀어야 할 문제 ${state.mistakes.length}개.`) },

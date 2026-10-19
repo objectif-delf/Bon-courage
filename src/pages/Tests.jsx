@@ -19,7 +19,7 @@ function poolFor(level, skill) {
 export default function Tests() {
   const { state, update } = useProgress()
   const { tr, lang } = useLang()
-  const [level, setLevel] = useState('B2')
+  const [level, setLevel] = useState(state.targetLevel || 'A2')
   const [skill, setSkill] = useState(null)
   const [run, setRun] = useState(0)
   const questions = useMemo(() => (skill ? pick(poolFor(level, skill), 10) : []), [level, skill, run])

@@ -8,7 +8,9 @@
  * repliable (« 한국어 설명 ») à partir du B1.
  */
 
-export const LESSONS_KO = {
+import { LESSONS_EXTRA_KO } from './lessonsExtra'
+
+const BASE_KO = {
   'a1-presenter': {
     objectives: ['être와 avoir 동사의 현재형 활용하기', '알맞은 관사 고르기 (un, une, le, la, l\', les)', '나이와 직업을 틀리지 않고 말하기'],
     sections: [
@@ -210,3 +212,5 @@ b는 한국어 "ㅂ"보다 목을 더 울립니다(유성음). 단어 처음의 
     }
   }
 }
+
+export const LESSONS_KO = { ...BASE_KO, ...LESSONS_EXTRA_KO }

@@ -1,4 +1,4 @@
-# Bon courage ! 화이팅 — Français FLE, du DELF A1 au C1 (objectif B2)
+# Bon courage ! 화이팅 — Français FLE, du A1 au C1
 
 Le nom réunit deux façons d'encourager : « Bon courage ! » en français, « 화이팅 » en coréen.
 
@@ -10,11 +10,13 @@ Aucun compte, aucun serveur, aucun abonnement : la progression est enregistrée 
 | Module | Contenu |
 |---|---|
 | **Interface FR / 한국어** | Bouton « FR / 한 » en haut de l'écran : menus, consignes et explications en coréen ; le contenu à apprendre reste en français |
-| **Leçons** (A1 → C1) | 10 leçons, dont 4 en B2 et une leçon de **prononciation pour coréanophones** (écoute de paires de mots). Chaque leçon : explication complète en coréen, encadré « Différence avec le coréen », erreurs fréquentes, glossaire, vérification (75 % pour valider), exercices en 3 niveaux |
+| **Leçons** (A1 → C1) | 19 leçons (4 en A1, 5 en A2, 3 en B1, 5 en B2, 2 en C1), dont une leçon de **prononciation pour coréanophones**. Chaque leçon : explication complète en coréen, « Différence avec le coréen », erreurs fréquentes, glossaire, vérification (75 % pour valider), exercices en 3 niveaux |
+| **Mon niveau** | L'étudiante choisit son niveau : l'accueil, le défi du jour, les tests et les jeux s'adaptent |
+| **Défi du jour** | 5 questions de son niveau, différentes chaque jour |
 | **Mon Espace Cours** | Import des cours du professeur (copier-coller, PDF, .txt) → exercices tirés **uniquement** de ce cours : sens des mots, textes à trous, phrases à remettre dans l'ordre, cartes mémoire |
 | **Dictionnaire FR ↔ KO** | 120 fiches vérifiées (prononciation API, romanisation, nature, exemple FR + KO), recherche dans les deux sens, mot cliquable partout dans l'app ; mots coréens via le dictionnaire officiel **KRDict** (facultatif), repli en ligne |
 | **Tests de compétences** | Grammaire, vocabulaire, compréhension, par niveau, 10 questions tirées au hasard |
-| **Examens blancs DELF B2** | 2 sujets originaux, 4 épreuves chronométrées, audio lu par la voix du navigateur, note sur 100, règle des 5/25 |
+| **Examens blancs A1 → C1** | Générés automatiquement : chaque examen pioche au hasard dans une banque de documents (oral, écrit, sujets de production) ; sujet entièrement nouveau possible avec l'IA. 4 épreuves chronométrées, note sur 100, règle des 5/25 |
 | **Ludification** | Points, niveaux, série de jours, 13 badges, cartes mémoire à répétition espacée, textes à trous, quiz de rapidité |
 | **Thèmes** | Clair, Sombre, Bande dessinée, Cyberpunk Paris |
 
@@ -48,7 +50,9 @@ bon-courage/
 │   │   ├── lessonsKo.js           # explications complètes en coréen + « Différence avec le coréen »
 │   │   ├── questions.js           # banque des tests de compétences
 │   │   ├── dictionary.js          # dictionnaire FR↔KO
-│   │   ├── delfB2.js              # sujets d'examens blancs + grilles d'évaluation
+│   │   ├── lessonsExtra.js        # leçons supplémentaires (A1 → C1)
+│   │   ├── examBank.js            # banque d'examens A1 → C1, formats, grilles, générateur
+│   │   ├── delfB2.js              # sujets B2 (utilisés par la banque)
 │   │   └── badges.js
 │   ├── lib/                       # logique : génération d'exercices, traduction, IA, PDF, voix, thèmes
 │   ├── store/progress.jsx         # progression (points, badges, erreurs…) dans le navigateur

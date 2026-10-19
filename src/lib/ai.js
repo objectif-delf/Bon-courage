@@ -92,3 +92,35 @@ Texte du candidat :
  "conseilKo": "conseil principal en coréen"}`
   })
 }
+
+/** Examen blanc complet généré par l'IA (sujet entièrement nouveau). */
+export async function aiGenerateExam(settings, level, format) {
+  const res = await askGeminiJSON({
+    key: settings.aiKey,
+    model: settings.aiModel,
+    temperature: 0.8,
+    prompt: `Tu es concepteur de sujets du DELF/DALF (France Éducation international).
+Crée un examen blanc ORIGINAL de niveau ${level} (${format.name}), adapté à une apprenante coréenne,
+en respectant strictement le niveau du CECRL (${level}). Thèmes variés de la vie quotidienne pour A1-A2.
+Réponds UNIQUEMENT en JSON :
+{"co":[ ${format.co.docs} documents audio : {"title":"…","script":"texte lu à voix haute (dialogue avec « — » possible)","questions":[3 ou 4 × {"prompt":"…","options":["4 propositions"],"answer":index,"explanation":"…"}]} ],
+ "ce":[ ${format.ce.docs} documents écrits : {"title":"…","text":"…","questions":[3 ou 4 QCM, même format]} ],
+ "pe":{"tasks":[{"type":"…","subject":"consigne complète avec nombre de mots","minWords":nombre}]},
+ "po":{"parts":[{"title":"Partie … (durée)","instructions":"…","prompts":["questions ou étapes"],"document":"texte court (facultatif)"}]}}
+Longueur des textes adaptée au niveau. Les QCM doivent avoir une seule bonne réponse indiscutable.`
+  })
+  const okQ = (x) => x && typeof x.prompt === 'string' && Array.isArray(x.options) && x.options.length >= 2 && Number.isInteger(x.answer) && x.answer >= 0 && x.answer < x.options.length
+  const stamp = Date.now().toString(36)
+  const docs = (arr, kind, field) => (Array.isArray(arr) ? arr : [])
+    .filter((d) => d && typeof d[field] === 'string' && Array.isArray(d.questions))
+    .map((d, i) => ({ ...d, maxPlays: 2, questions: d.questions.filter(okQ).map((x, j) => ({ ...x, type: 'qcm', id: `ia-${stamp}-${kind}${i}-${j}` })) }))
+    .filter((d) => d.questions.length)
+  const exam = {
+    co: docs(res.co, 'co', 'script'),
+    ce: docs(res.ce, 'ce', 'text'),
+    pe: res.pe?.tasks?.length ? { tasks: res.pe.tasks.filter((t) => t.subject).map((t) => ({ type: t.type || 'Production écrite', subject: t.subject, minWords: Number(t.minWords) || 60 })) } : null,
+    po: res.po?.parts?.length ? { parts: res.po.parts.filter((p) => p.instructions || p.prompts).map((p) => ({ title: p.title || 'Production orale', instructions: p.instructions || '', prompts: Array.isArray(p.prompts) ? p.prompts : [], document: p.document || '' })) } : null
+  }
+  if (!exam.co.length || !exam.ce.length || !exam.pe?.tasks.length || !exam.po?.parts.length) throw new Error('Sujet incomplet reçu — réessayez.')
+  return exam
+}

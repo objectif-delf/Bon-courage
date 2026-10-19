@@ -13,6 +13,9 @@ export const DEFAULT_STATE = {
   name: '',
   theme: 'clair',
   uiLang: 'fr', // langue de l'interface : 'fr' ou 'ko'
+  targetLevel: 'A2', // niveau visé, choisi par l'étudiant (A1, A2, B1, B2, C1)
+  daily: null, // date du dernier défi du jour réussi
+  adminMode: false, // réglages techniques visibles (activé par le lien ?reglages=1)
   showKo: true, // afficher les aides en coréen
   xp: 0,
   streak: { count: 0, last: null },
@@ -134,15 +137,15 @@ export function ProgressProvider({ children }) {
       update((s) => ({ ...s, [name]: value }))
     },
     exportData() {
-      return JSON.stringify({ app: 'bon-courage', version: 1, exported: new Date().toISOString(), state: { ...state, settings: { ...state.settings, aiKey: '' } } }, null, 2)
+      return JSON.stringify({ app: 'bon-courage', version: 1, exported: new Date().toISOString(), state: { ...state, adminMode: false, settings: { ...state.settings, aiKey: '' } } }, null, 2)
     },
     importData(text) {
       const data = JSON.parse(text)
       if (data.app !== 'bon-courage' || !data.state) throw new Error('Fichier non reconnu')
-      setState({ ...DEFAULT_STATE, ...data.state, settings: { ...DEFAULT_STATE.settings, ...data.state.settings, aiKey: state.settings.aiKey } })
+      setState({ ...DEFAULT_STATE, ...data.state, adminMode: state.adminMode, settings: { ...DEFAULT_STATE.settings, ...data.state.settings, aiKey: state.settings.aiKey } })
     },
     reset() {
-      setState({ ...DEFAULT_STATE, theme: state.theme, uiLang: state.uiLang })
+      setState({ ...DEFAULT_STATE, theme: state.theme, uiLang: state.uiLang, adminMode: state.adminMode, settings: state.settings })
     }
   }), [state, toasts, update, pushToast])
 

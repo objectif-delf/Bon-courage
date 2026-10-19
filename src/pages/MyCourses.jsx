@@ -175,7 +175,7 @@ function CourseView({ course, onBack, onDelete, onSave }) {
                 <span className="text-2xl">🤖</span><span className="block font-bold">{tr('Exercices avancés (IA)', '심화 문제 (AI)')}</span>
                 <span className="block text-sm text-muted">{tr('Grammaire et compréhension tirées du cours', '수업에서 뽑은 문법·독해 문제')}</span>
               </button>
-            ) : (
+            ) : state.adminMode && (
               <Link to="/profil" className="card text-left hover:opacity-90">
                 <span className="text-2xl">🤖</span><span className="block font-bold">{tr('Exercices avancés (IA)', '심화 문제 (AI)')}</span>
                 <span className="block text-sm text-muted">{tr('Facultatif : ajoutez une clé gratuite dans Profil', '선택 사항: 프로필에서 무료 키를 추가하세요')}</span>

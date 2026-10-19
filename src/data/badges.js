@@ -11,8 +11,8 @@ export const BADGES = [
   { id: 'dico', icon: '🔎', label: 'Curieux', ko: '호기심', desc: 'Chercher 20 mots dans le dictionnaire.', descKo: '사전에서 단어 20개를 찾아보세요.', test: (s) => s.stats.lookups >= 20 },
   { id: 'memoire', icon: '🃏', label: 'Mémoire d\'éléphant', ko: '기억력', desc: 'Réviser 50 cartes mémoire.', descKo: '단어 카드 50장을 복습하세요.', test: (s) => s.stats.flashReviewed >= 50 },
   { id: 'eclair', icon: '⚡', label: 'Éclair', ko: '번개', desc: 'Obtenir 12 bonnes réponses au quiz de rapidité.', descKo: '스피드 퀴즈에서 12개를 맞히세요.', test: (s) => s.stats.bestSpeed >= 12 },
-  { id: 'examen', icon: '📝', label: 'Premier examen blanc', ko: '첫 모의고사', desc: 'Terminer un examen blanc DELF B2.', descKo: 'DELF B2 모의고사를 하나 끝내세요.', test: (s) => s.exams.length >= 1 },
-  { id: 'reussite-b2', icon: '🏆', label: 'Objectif B2', ko: 'B2 목표 달성', desc: 'Obtenir au moins 50/100 à un examen blanc, sans note éliminatoire.', descKo: '모의고사에서 과락 없이 50/100 이상을 받으세요.', test: (s) => s.exams.some((e) => e.passed) },
+  { id: 'examen', icon: '📝', label: 'Premier examen blanc', ko: '첫 모의고사', desc: 'Terminer un examen blanc.', descKo: '모의고사를 하나 끝내세요.', test: (s) => s.exams.length >= 1 },
+  { id: 'reussite-b2', icon: '🏆', label: 'Examen réussi', ko: '모의고사 합격', desc: 'Obtenir au moins 50/100 à un examen blanc, sans note éliminatoire.', descKo: '모의고사에서 과락 없이 50/100 이상을 받으세요.', test: (s) => s.exams.some((e) => e.passed) },
   { id: 'erreurs', icon: '🩹', label: 'Je corrige mes erreurs', ko: '오답 극복', desc: 'Corriger 10 erreurs dans « Revoir mes erreurs ».', descKo: '« 오답 노트 »에서 틀린 문제 10개를 고치세요.', test: (s) => s.stats.mistakesFixed >= 10 }
 ]
 

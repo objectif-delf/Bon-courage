@@ -1,5 +1,6 @@
 /**
  * LEÇONS — contenu original, rédigé pour des étudiants coréanophones.
+ * (Leçons supplémentaires : voir lessonsExtra.js.)
  * Déroulé d'une leçon : 1) Cours  2) Erreurs fréquentes  3) Glossaire
  *                      4) Vérification (≥ 75 % pour valider)  5) Exercices (3 niveaux)
  *
@@ -15,11 +16,13 @@ export const LEVELS = [
   { id: 'A1', label: 'A1', name: 'Découverte', ko: '입문' },
   { id: 'A2', label: 'A2', name: 'Survie', ko: '초급' },
   { id: 'B1', label: 'B1', name: 'Seuil', ko: '중급' },
-  { id: 'B2', label: 'B2', name: 'Avancé — objectif', ko: '중상급 — 목표' },
+  { id: 'B2', label: 'B2', name: 'Avancé', ko: '중상급' },
   { id: 'C1', label: 'C1', name: 'Autonome', ko: '고급' }
 ]
 
-export const LESSONS = [
+import { LESSONS_EXTRA } from './lessonsExtra'
+
+const BASE_LESSONS = [
   // ───────────────────────────────── A1 — prononciation
   {
     id: 'a1-prononciation',
@@ -812,5 +815,12 @@ Formes courtes : choisir → le choix, partir → le départ, refuser → le ref
     }
   }
 ]
+
+// Toutes les leçons, triées par niveau (l'ordre du fichier est conservé dans un niveau).
+const ORDER = ['A1', 'A2', 'B1', 'B2', 'C1']
+export const LESSONS = [...BASE_LESSONS, ...LESSONS_EXTRA]
+  .map((l, i) => ({ l, i }))
+  .sort((a, b) => ORDER.indexOf(a.l.level) - ORDER.indexOf(b.l.level) || a.i - b.i)
+  .map((x) => x.l)
 
 export const lessonById = (id) => LESSONS.find((l) => l.id === id)

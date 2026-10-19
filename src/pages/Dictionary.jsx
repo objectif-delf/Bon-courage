@@ -13,7 +13,7 @@ export default function Dictionary() {
   const [q, setQ] = useState('')
   const [res, setRes] = useState(null)
   const [busy, setBusy] = useState(false)
-  const [level, setLevel] = useState('B2')
+  const [level, setLevel] = useState(['A1', 'A2', 'B1', 'B2'].includes(state.targetLevel) ? state.targetLevel : 'B2')
   const live = useMemo(() => (q.trim() ? searchLocal(q, 6) : []), [q])
   const browse = DICTIONARY.filter((e) => e.level === level)
   const hasKrdict = krdictConfigured(state.settings)
@@ -63,8 +63,8 @@ export default function Dictionary() {
         <summary className="font-bold cursor-pointer">{tr('Comment fonctionne la traduction ?', '번역은 어떻게 이루어지나요?')}</summary>
         <ul className="list-disc pl-5 mt-2 space-y-1 text-muted">
           <li><strong className="text-ink">✅ {tr('Vérifié', '검증됨')}</strong> : {tr('fiches du dictionnaire intégré (hors ligne).', '내장 사전 항목 (오프라인 사용 가능).')}</li>
-          <li><strong className="text-ink">📘 KRDict</strong> : {tr('pour un mot coréen, le dictionnaire officiel 한국어기초사전 (국립국어원) donne la traduction française de chaque sens, homonymes séparés.', '한국어 단어는 국립국어원 한국어기초사전에서 뜻별 프랑스어 번역을 가져옵니다 (동음이의어 구분).')}{!hasKrdict && tr(' Non configuré.', ' (미설정)')}</li>
-          <li><strong className="text-ink">🤖 {tr('IA', 'AI')}</strong> : {tr('si une clé gratuite est ajoutée (Profil), fiche complète générée — très bonne qualité mais à vérifier.', '무료 키를 추가하면(프로필) 상세 항목을 만들어 줍니다. 품질이 좋지만 확인이 필요합니다.')}</li>
+          <li><strong className="text-ink">📘 KRDict</strong> : {tr('pour un mot coréen, le dictionnaire officiel 한국어기초사전 (국립국어원) donne la traduction française de chaque sens, homonymes séparés.', '한국어 단어는 국립국어원 한국어기초사전에서 뜻별 프랑스어 번역을 가져옵니다 (동음이의어 구분).')}{!hasKrdict && state.adminMode && tr(' Non configuré.', ' (미설정)')}</li>
+          {state.adminMode && <li><strong className="text-ink">🤖 {tr('IA', 'AI')}</strong> : {tr('si une clé gratuite est ajoutée (Profil), fiche complète générée — très bonne qualité mais à vérifier.', '무료 키를 추가하면(프로필) 상세 항목을 만들어 줍니다. 품질이 좋지만 확인이 필요합니다.')}</li>}
           <li><strong className="text-ink">⚙️ {tr('Automatique', '자동 번역')}</strong> : {tr('service gratuit MyMemory, plusieurs propositions, parfois approximatif.', '무료 서비스 MyMemory. 여러 후보를 보여 주지만 부정확할 수 있습니다.')}</li>
           <li>{tr('Aucune traduction automatique n\'est parfaite : en cas de doute, le lien Naver permet de vérifier.', '자동 번역은 완벽하지 않습니다. 확실하지 않으면 네이버 사전 링크로 확인하세요.')}</li>
         </ul>

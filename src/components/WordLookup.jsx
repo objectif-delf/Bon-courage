@@ -143,6 +143,7 @@ function KrdictCard({ query, senses }) {
 
 export function LookupResult({ res, query }) {
   const { tr } = useLang()
+  const { state } = useProgress()
   if (res.source === 'vide') return null
   const local = res.entries || []
   return (
@@ -163,10 +164,10 @@ export function LookupResult({ res, query }) {
               <li key={p} lang="ko" className="ko chip text-base flex items-center">{p}<SpeakButton text={p} lang={res.machine.direction === 'fr→ko' ? 'ko-KR' : 'fr-FR'} small /></li>
             ))}
           </ul>
-          <p className="text-xs text-muted mt-2">{tr('Traduction automatique : prononciation, nature et exemples complets disponibles avec l\'IA (Profil › IA).', '자동 번역입니다. 발음·품사·예문이 포함된 상세 정보는 AI 설정 후 이용할 수 있습니다 (프로필 › AI).')}</p>
+          {state.adminMode && <p className="text-xs text-muted mt-2">{tr('Traduction automatique : prononciation, nature et exemples complets disponibles avec l\'IA (Profil › IA).', '자동 번역입니다. 발음·품사·예문이 포함된 상세 정보는 AI 설정 후 이용할 수 있습니다 (프로필 › AI).')}</p>}
         </div>
       )}
-      {res.krdictError && <p className="text-xs text-muted mt-2">{res.krdictError}</p>}
+      {res.krdictError && state.adminMode && <p className="text-xs text-muted mt-2">{res.krdictError}</p>}
       {res.aiError && <p className="text-sm mt-2" style={{ color: 'var(--bad)' }}>IA : {res.aiError}</p>}
       {res.source === 'erreur' && <p className="py-3" style={{ color: 'var(--bad)' }}>{tr(`Pas de connexion ou service indisponible (${res.error}). Le dictionnaire intégré fonctionne hors ligne.`, `인터넷 연결이 없거나 서비스를 이용할 수 없습니다 (${res.error}). 내장 사전은 오프라인에서도 작동합니다.`)}</p>}
       {local.length > 0 && (

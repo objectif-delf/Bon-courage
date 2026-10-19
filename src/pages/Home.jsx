@@ -6,16 +6,35 @@ import { BADGES } from '../data/badges'
 import { useLang } from '../lib/i18n'
 import { ProgressBar } from '../components/ui'
 
+const selected = { background: 'var(--primary)', color: 'var(--primary-ink)', borderColor: 'var(--primary)' }
+
+export function LevelPicker() {
+  const { state, set } = useProgress()
+  const { tr } = useLang()
+  return (
+    <div className="flex gap-2 flex-wrap" role="group" aria-label={tr('Mon niveau', '내 단계')}>
+      {LEVELS.map((l) => (
+        <button key={l.id} className="btn !min-h-0 !py-1.5" onClick={() => set('targetLevel', l.id)} style={state.targetLevel === l.id ? selected : undefined}>
+          {l.label} <span className="text-xs opacity-75">{tr(l.name, l.ko)}</span>
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function Home() {
   const { state, set } = useProgress()
   const { tr, lang, setLang } = useLang()
   const [name, setName] = useState('')
+  const level = state.targetLevel || 'A2'
   const done = (id) => state.lessons[id]?.checkPassed
-  const next = LESSONS.find((l) => !done(l.id))
-  const b2 = LESSONS.filter((l) => l.level === 'B2')
-  const b2Done = b2.filter((l) => done(l.id)).length
-  const lastExam = state.exams.find((e) => e.full)
-  const accuracy = state.stats.answered ? Math.round((state.stats.correct / state.stats.answered) * 100) : null
+  const mine = LESSONS.filter((l) => l.level === level)
+  const mineDone = mine.filter((l) => done(l.id)).length
+  const next = mine.find((l) => !done(l.id)) || LESSONS.find((l) => !done(l.id))
+  const today = new Date().toISOString().slice(0, 10)
+  const dailyDone = state.daily === today
+  const lastExam = state.exams.find((e) => e.full && (e.level || 'B2') === level)
+  const levelInfo = LEVELS.find((l) => l.id === level)
 
   return (
     <div className="space-y-5">
@@ -25,55 +44,70 @@ export default function Home() {
           {state.name ? tr(`Bonjour, ${state.name} !`, `${state.name}님, 안녕하세요!`) : tr('Bienvenue !', '환영합니다!')}
         </h1>
         {!state.name ? (
-          <>
-            <div className="flex gap-2 mt-3" role="group" aria-label="Langue · 언어">
-              <button className="btn" onClick={() => setLang('ko')} style={lang === 'ko' ? { background: 'var(--primary)', color: 'var(--primary-ink)', borderColor: 'var(--primary)' } : undefined}>🇰🇷 한국어로 보기</button>
-              <button className="btn" onClick={() => setLang('fr')} style={lang === 'fr' ? { background: 'var(--primary)', color: 'var(--primary-ink)', borderColor: 'var(--primary)' } : undefined}>🇫🇷 En français</button>
+          <div className="space-y-3 mt-3">
+            <div className="flex gap-2" role="group" aria-label="Langue · 언어">
+              <button className="btn" onClick={() => setLang('ko')} style={lang === 'ko' ? selected : undefined}>🇰🇷 한국어로 보기</button>
+              <button className="btn" onClick={() => setLang('fr')} style={lang === 'fr' ? selected : undefined}>🇫🇷 En français</button>
             </div>
-            <form className="mt-3 flex gap-2 max-w-md" onSubmit={(e) => { e.preventDefault(); if (name.trim()) set('name', name.trim()) }}>
-              <input className="input" placeholder={tr('Votre prénom · 이름', '이름 · Prénom')} value={name} onChange={(e) => setName(e.target.value)} aria-label={tr('Votre prénom', '이름')} />
+            <div>
+              <p className="text-sm font-bold mb-1">{tr('Mon niveau de français :', '내 프랑스어 단계:')}</p>
+              <LevelPicker />
+            </div>
+            <form className="flex gap-2 max-w-md" onSubmit={(e) => { e.preventDefault(); if (name.trim()) set('name', name.trim()) }}>
+              <input className="input" placeholder={tr('Votre prénom', '이름')} value={name} onChange={(e) => setName(e.target.value)} aria-label={tr('Votre prénom', '이름')} />
               <button className="btn btn-primary">OK</button>
             </form>
-          </>
+          </div>
         ) : (
           <p className="text-muted mt-2">{lang === 'ko'
-            ? <>목표: <strong className="text-ink">DELF B2</strong>. 모든 수업은 강의 → 이해 확인 → 연습 문제 순서로 진행됩니다.</>
-            : <>Objectif : <strong className="text-ink">DELF B2</strong>. Chaque leçon commence par le cours, puis une vérification, puis des exercices.</>}</p>
+            ? <>내 단계: <strong className="text-ink">{level}</strong> ({levelInfo?.ko}). 강의로 배우고, 연습하고, 게임으로 복습해요!</>
+            : <>Mon niveau : <strong className="text-ink">{level}</strong> ({levelInfo?.name}). On apprend avec le cours, on s'entraîne, on révise en jouant !</>}</p>
         )}
         <div aria-hidden className="absolute -right-6 -top-6 text-[120px] opacity-10 select-none">🇫🇷</div>
       </section>
 
-      {next && (
-        <Link to={`/lecons/${next.id}`} className="card flex items-center gap-4 hover:opacity-95" style={{ background: 'var(--primary)', color: 'var(--primary-ink)', borderColor: 'var(--primary)' }}>
-          <span className="text-4xl" aria-hidden>▶️</span>
+      <section className="grid gap-3 md:grid-cols-2">
+        {next && (
+          <Link to={`/lecons/${next.id}`} className="card flex items-center gap-4 hover:opacity-95" style={selected}>
+            <span className="text-4xl" aria-hidden>▶️</span>
+            <span className="flex-1">
+              <span className="text-sm opacity-80">{tr('Prochaine leçon', '다음 수업')} — {next.level}</span>
+              <span lang={lang} className={`${lang === 'ko' ? 'ko ' : ''}block h-display text-xl font-bold`}>{tr(next.title, next.titleKo)}</span>
+            </span>
+          </Link>
+        )}
+        <Link to="/defi" className="card flex items-center gap-4 hover:opacity-95" style={dailyDone ? undefined : { background: 'var(--accent)', color: '#fff', borderColor: 'var(--accent)' }}>
+          <span className="text-4xl" aria-hidden>{dailyDone ? '✅' : '☀️'}</span>
           <span className="flex-1">
-            <span className="text-sm opacity-80">{tr('Continuer', '이어서 하기')} — {next.level}</span>
-            <span lang={lang} className={`${lang === 'ko' ? 'ko ' : ''}block h-display text-xl font-bold`}>{tr(next.title, next.titleKo)}</span>
+            <span className="text-sm opacity-80">{tr('5 questions · niveau', '5문제 · 단계')} {level}</span>
+            <span className="block h-display text-xl font-bold">{dailyDone ? tr('Défi du jour réussi !', '오늘의 도전 완료!') : tr('Défi du jour', '오늘의 도전')}</span>
           </span>
-          <span className="text-2xl" aria-hidden>→</span>
         </Link>
-      )}
+      </section>
 
       <section className="grid gap-4 md:grid-cols-2">
         <div className="card">
-          <h2 className="font-bold flex items-center gap-2">🎯 {tr('Objectif DELF B2', 'DELF B2 목표')}</h2>
-          <p className="text-sm text-muted mt-1">{tr('Leçons B2 validées', '완료한 B2 수업')}</p>
-          <div className="flex items-center gap-3 mt-1">
-            <ProgressBar value={b2Done} max={b2.length} label={tr('Leçons B2 validées', '완료한 B2 수업')} />
-            <span className="font-bold tabular-nums">{b2Done}/{b2.length}</span>
+          <div className="flex items-center justify-between">
+            <h2 className="font-bold">🎯 {tr(`Mon niveau : ${level}`, `내 단계: ${level}`)}</h2>
+            <Link to="/profil" className="text-sm underline" style={{ color: 'var(--primary)' }}>{tr('Changer', '변경')}</Link>
           </div>
-          <p className="text-sm text-muted mt-3">{tr('Dernier examen blanc', '최근 모의고사')}</p>
+          <p className="text-sm text-muted mt-1">{tr(`Leçons ${level} validées`, `완료한 ${level} 수업`)}</p>
+          <div className="flex items-center gap-3 mt-1">
+            <ProgressBar value={mineDone} max={mine.length || 1} label={tr('Leçons validées', '완료한 수업')} />
+            <span className="font-bold tabular-nums">{mineDone}/{mine.length}</span>
+          </div>
+          <p className="text-sm text-muted mt-3">{tr(`Dernier examen blanc ${level}`, `최근 ${level} 모의고사`)}</p>
           {lastExam ? (
             <p className="font-bold text-2xl">{lastExam.total}/100 <span className="text-base" style={{ color: lastExam.passed ? 'var(--good)' : 'var(--bad)' }}>{lastExam.passed ? tr('réussi', '합격선 통과') : tr('pas encore', '아직')}</span></p>
           ) : (
-            <Link to="/examen" className="underline" style={{ color: 'var(--primary)' }}>{tr('Passer un premier examen blanc →', '첫 모의고사 보기 →')}</Link>
+            <Link to="/examen" className="underline" style={{ color: 'var(--primary)' }}>{tr('Essayer un examen blanc →', '모의고사 풀어 보기 →')}</Link>
           )}
         </div>
         <div className="card">
           <h2 className="font-bold">📈 {tr('Mes statistiques', '나의 통계')}</h2>
           <dl className="grid grid-cols-3 gap-2 mt-3 text-center">
             <div><dt className="text-xs text-muted">{tr('Réponses', '푼 문제')}</dt><dd className="h-display text-2xl font-bold">{state.stats.answered}</dd></div>
-            <div><dt className="text-xs text-muted">{tr('Réussite', '정답률')}</dt><dd className="h-display text-2xl font-bold">{accuracy === null ? '—' : accuracy + '%'}</dd></div>
+            <div><dt className="text-xs text-muted">{tr('Réussite', '정답률')}</dt><dd className="h-display text-2xl font-bold">{state.stats.answered ? Math.round((state.stats.correct / state.stats.answered) * 100) + '%' : '—'}</dd></div>
             <div><dt className="text-xs text-muted">{tr('À revoir', '복습할 문제')}</dt><dd className="h-display text-2xl font-bold">{state.mistakes.length}</dd></div>
           </dl>
           {state.mistakes.length > 0 && <Link to="/erreurs" className="btn w-full mt-3">🩹 {tr('Revoir mes erreurs', '오답 노트')}</Link>}
@@ -81,16 +115,16 @@ export default function Home() {
       </section>
 
       <section>
-        <h2 className="font-bold mb-2">{tr('Progression par niveau', '단계별 진도')}</h2>
+        <h2 className="font-bold mb-2">{tr('Mon parcours', '나의 진도')}</h2>
         <div className="grid grid-cols-5 gap-2">
           {LEVELS.map((lv) => {
             const ls = LESSONS.filter((l) => l.level === lv.id)
             const d = ls.filter((l) => done(l.id)).length
             return (
-              <Link key={lv.id} to={`/lecons#${lv.id}`} className="card !p-3 text-center" style={lv.id === 'B2' ? { outline: '3px solid var(--accent)', outlineOffset: '-3px' } : undefined}>
+              <Link key={lv.id} to={`/lecons#${lv.id}`} className="card !p-3 text-center" style={lv.id === level ? { outline: '3px solid var(--accent)', outlineOffset: '-3px' } : undefined}>
                 <span className="h-display text-xl font-extrabold">{lv.label}</span>
                 <span className="block text-xs text-muted">{d}/{ls.length}</span>
-                <ProgressBar value={d} max={ls.length || 1} height={6} label={`${lv.label}`} />
+                <ProgressBar value={d} max={ls.length || 1} height={6} label={lv.label} />
               </Link>
             )
           })}
@@ -99,10 +133,10 @@ export default function Home() {
 
       <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          ['/mon-espace', '🧑‍🏫', 'Mon Espace Cours', '내 수업 공간', 'Importer les cours du prof', '선생님 수업 가져오기'],
-          ['/examen', '📝', 'Examen blanc B2', 'B2 모의고사', 'Les 4 épreuves, notées', '4개 영역, 채점'],
           ['/jeux', '🃏', 'Mini-jeux', '미니 게임', 'Réviser en s\'amusant', '게임으로 복습'],
-          ['/dictionnaire', '🔎', 'Dictionnaire', '사전', 'Français ↔ coréen', '불한 · 한불']
+          ['/mon-espace', '🧑‍🏫', 'Mon Espace Cours', '내 수업 공간', 'Les cours du prof', '선생님 수업'],
+          ['/dictionnaire', '🔎', 'Dictionnaire', '사전', 'Français ↔ coréen', '불한 · 한불'],
+          ['/examen', '📝', 'Examens blancs', '모의고사', 'Tous niveaux', '모든 단계']
         ].map(([to, icon, label, ko, sub, subKo]) => (
           <Link key={to} to={to} className="card text-center hover:opacity-90">
             <span className="text-3xl" aria-hidden>{icon}</span>

@@ -18,6 +18,29 @@ import Exam from './pages/Exam'
 import Games from './pages/Games'
 import Mistakes from './pages/Mistakes'
 import Profile from './pages/Profile'
+import Daily from './pages/Daily'
+
+/**
+ * Mode réglages : les réglages techniques (KRDict, IA, MyMemory) sont cachés pour
+ * l'élève. Ils apparaissent en ouvrant l'adresse du site suivie de « ?reglages=1 »
+ * (ex. https://objectif-delf.github.io/Bon-courage/?reglages=1). Le mode reste
+ * actif sur cet appareil jusqu'à « Quitter le mode réglages » dans Profil.
+ */
+function AdminSync() {
+  const { set } = useProgress()
+  useEffect(() => {
+    const href = window.location.href
+    if (/[?&]reglages=1\b/.test(href)) {
+      set('adminMode', true)
+      const url = new URL(href)
+      url.searchParams.delete('reglages')
+      window.history.replaceState(null, '', url.pathname + url.search + '#/profil')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  return null
+}
 
 function ThemeSync() {
   const { state } = useProgress()
@@ -29,6 +52,7 @@ export default function App() {
   return (
     <ProgressProvider>
       <ThemeSync />
+      <AdminSync />
       <LangSync />
       <WordLookupProvider>
         <HashRouter>
@@ -45,6 +69,7 @@ export default function App() {
               <Route path="jeux" element={<Games />} />
               <Route path="erreurs" element={<Mistakes />} />
               <Route path="profil" element={<Profile />} />
+              <Route path="defi" element={<Daily />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

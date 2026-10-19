@@ -1,7 +1,7 @@
 {
-  "name": "Bon courage ! 화이팅 — Français FLE (DELF A1→C1)",
+  "name": "Bon courage ! 화이팅 — Français FLE (A1→C1)",
   "short_name": "Bon courage",
-  "description": "Apprendre le français gratuitement : cours, exercices, dictionnaire français-coréen et examens blancs DELF B2.",
+  "description": "Apprendre le français gratuitement : cours, jeux, dictionnaire français-coréen et examens blancs du A1 au C1.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

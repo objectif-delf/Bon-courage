@@ -12,10 +12,10 @@ export const NAV = [
   { to: '/dictionnaire', label: 'Dictionnaire', short: 'Dico', ko: '사전', icon: '🔎', mobile: true },
   { to: '/entrainement', label: 'S\'entraîner', ko: '연습', icon: '🎯', mobile: true },
   { to: '/tests', label: 'Tests de compétences', ko: '실력 테스트', icon: '🧪' },
-  { to: '/examen', label: 'Examens blancs B2', ko: 'B2 모의고사', icon: '📝' },
+  { to: '/examen', label: 'Examens blancs', ko: '모의고사', icon: '📝' },
   { to: '/jeux', label: 'Mini-jeux', ko: '미니 게임', icon: '🃏' },
   { to: '/erreurs', label: 'Revoir mes erreurs', ko: '오답 노트', icon: '🩹' },
-  { to: '/profil', label: 'Profil & réglages', ko: '프로필', icon: '⚙️' }
+  { to: '/profil', label: 'Profil', ko: '프로필', icon: '⚙️' }
 ]
 
 function Toasts() {

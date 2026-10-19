@@ -10,8 +10,8 @@ export default function Lessons() {
   return (
     <div>
       <PageHeader title="Leçons" ko="단계별 수업"
-        subtitle="Du DELF A1 au C1, avec un parcours renforcé pour le B2. Chaque leçon : cours → erreurs fréquentes → glossaire → vérification → exercices."
-        subtitleKo="DELF A1부터 C1까지, B2 과정을 강화했습니다. 각 수업: 강의 → 자주 하는 실수 → 용어집 → 이해 확인 → 연습 문제." />
+        subtitle="Du niveau A1 au C1. Chaque leçon : cours → erreurs fréquentes → glossaire → vérification → exercices."
+        subtitleKo="A1부터 C1까지. 각 수업: 강의 → 자주 하는 실수 → 용어집 → 이해 확인 → 연습 문제." />
       <div className="space-y-6">
         {LEVELS.map((lv) => {
           const ls = LESSONS.filter((l) => l.level === lv.id)
@@ -21,7 +21,7 @@ export default function Lessons() {
                 <span className="h-display text-2xl font-extrabold">{lv.label}</span>
                 <span lang={lang} className="font-bold">{tr(lv.name, lv.ko)}</span>
                 <span lang={lang === 'ko' ? 'fr' : 'ko'} className={`${lang === 'ko' ? '' : 'ko '}text-sm text-muted`}>{lang === 'ko' ? lv.name : lv.ko}</span>
-                {lv.id === 'B2' && <span className="chip text-xs" style={{ background: 'var(--accent)', color: '#fff' }}>{tr('Objectif', '목표')}</span>}
+                {lv.id === state.targetLevel && <span className="chip text-xs" style={{ background: 'var(--accent)', color: '#fff' }}>{tr('Mon niveau', '내 단계')}</span>}
               </h2>
               <div className="grid gap-3 md:grid-cols-2">
                 {ls.map((l) => {

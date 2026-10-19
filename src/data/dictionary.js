@@ -141,7 +141,32 @@ const RAW = [
   ['en fait', '사실은, 실은', '/ɑ̃ fɛt/', 'sasireun', 'adverbe', 'A2', 'En fait, je préfère rester ici.', '사실은 여기 있는 게 더 좋아요.'],
   ['éventuellement', '경우에 따라, 혹시', '/e.vɑ̃.tɥɛl.mɑ̃/', 'gyeongue ttara', 'adverbe', 'B2', 'Nous pourrons éventuellement reporter la réunion.', '경우에 따라 회의를 연기할 수도 있습니다.', 'Faux ami avec l\'anglais « eventually » (결국 = finalement).'],
   ['la conférence', '강연, 회의', '/la kɔ̃.fe.ʁɑ̃s/', 'gangyeon', 'nom féminin', 'B1', 'J\'ai assisté à une conférence sur l\'IA.', '저는 인공지능에 관한 강연에 참석했어요.'],
-  ['assister à', '참석하다', '/a.sis.te a/', 'chamseokhada', 'verbe', 'B1', 'Elle a assisté à la réunion.', '그녀는 회의에 참석했다.', 'Faux ami : « assister quelqu\'un » = aider.', ['assiste', 'assisté']]
+  ['assister à', '참석하다', '/a.sis.te a/', 'chamseokhada', 'verbe', 'B1', 'Elle a assisté à la réunion.', '그녀는 회의에 참석했다.', 'Faux ami : « assister quelqu\'un » = aider.', ['assiste', 'assisté']],
+  // ── Vie quotidienne (A1-A2)
+  ['acheter', '사다', '/aʃ.te/', 'sada', 'verbe', 'A1', 'J\'achète des légumes au marché.', '시장에서 채소를 사요.', 'J\'achète, nous achetons (accent grave).', ['achète', 'achètes', 'achetons', 'achetez', 'achètent', 'acheté']],
+  ['prendre', '잡다, 타다, 먹다', '/pʁɑ̃dʁ/', 'japda, tada', 'verbe (irrégulier)', 'A1', 'Je prends le bus pour aller au travail.', '저는 출근할 때 버스를 타요.', 'Prendre le bus (타다), prendre un café (마시다).', ['prends', 'prend', 'prenons', 'prenez', 'prennent', 'pris']],
+  ['le marché', '시장', '/lə maʁ.ʃe/', 'sijang', 'nom masculin', 'A1', 'Le marché a lieu le samedi matin.', '시장은 토요일 아침에 열려요.'],
+  ['le week-end', '주말', '/lə wi.kɛnd/', 'jumal', 'nom masculin', 'A1', 'Qu\'est-ce que tu fais ce week-end ?', '이번 주말에 뭐 해?'],
+  ['la semaine', '주, 일주일', '/la sə.mɛn/', 'ju, iljuil', 'nom féminin', 'A1', 'Je travaille cinq jours par semaine.', '저는 일주일에 5일 일해요.'],
+  ['le billet', '표, 티켓; 지폐', '/lə bi.jɛ/', 'pyo', 'nom masculin', 'A2', 'J\'ai acheté deux billets de train.', '기차표 두 장을 샀어요.'],
+  ['le voyage', '여행', '/lə vwa.jaʒ/', 'yeohaeng', 'nom masculin', 'A1', 'Bon voyage !', '즐거운 여행 되세요!'],
+  ['la chambre', '방, 침실', '/la ʃɑ̃bʁ/', 'bang', 'nom féminin', 'A1', 'Ma chambre est petite mais lumineuse.', '내 방은 작지만 밝아요.'],
+  ['le quartier', '동네, 지역', '/lə kaʁ.tje/', 'dongne', 'nom masculin', 'A2', 'J\'aime beaucoup mon quartier.', '저는 우리 동네를 정말 좋아해요.'],
+  ['le médecin', '의사', '/lə med.sɛ̃/', 'uisa', 'nom masculin', 'A1', 'Je dois aller chez le médecin.', '병원에 가야 해요.', 'Aller chez le médecin = 병원에 가다.'],
+  ['malade', '아픈', '/ma.lad/', 'apeun', 'adjectif', 'A1', 'Je suis malade, je reste à la maison.', '아파서 집에 있어요.'],
+  ['fatigué', '피곤한', '/fa.ti.ɡe/', 'pigonhan', 'adjectif (fatiguée)', 'A1', 'Elle est très fatiguée ce soir.', '그녀는 오늘 저녁 매우 피곤해요.', '', ['fatiguée', 'fatigués']],
+  ['content', '기쁜, 만족한', '/kɔ̃.tɑ̃/', 'gippeun', 'adjectif (contente)', 'A1', 'Je suis content de te voir !', '만나서 반가워!', '', ['contente', 'contents']],
+  ['cher', '비싼; 친애하는', '/ʃɛʁ/', 'bissan', 'adjectif (chère)', 'A1', 'Ce restaurant est trop cher.', '이 식당은 너무 비싸요.', 'Cher ami = 친애하는 친구 (lettre).', ['chère', 'chers']],
+  ['ouvrir', '열다', '/u.vʁiʁ/', 'yeolda', 'verbe', 'A1', 'Le magasin ouvre à neuf heures.', '가게는 9시에 열어요.', '', ['ouvre', 'ouvrent', 'ouvert']],
+  ['fermer', '닫다', '/fɛʁ.me/', 'datda', 'verbe', 'A1', 'Peux-tu fermer la fenêtre ?', '창문 좀 닫아 줄래?', '', ['ferme', 'ferment', 'fermé']],
+  ['attendre', '기다리다', '/a.tɑ̃dʁ/', 'gidarida', 'verbe', 'A2', 'Je t\'attends devant la gare.', '역 앞에서 기다릴게.', 'Attendre quelqu\'un (sans « pour »).', ['attends', 'attend', 'attendons', 'attendez', 'attendu']],
+  ['inviter', '초대하다', '/ɛ̃.vi.te/', 'chodaehada', 'verbe', 'A2', 'Je t\'invite à mon anniversaire.', '내 생일에 너를 초대할게.', '', ['invite', 'invité']],
+  ['la fête', '파티, 축제', '/la fɛt/', 'pati, chukje', 'nom féminin', 'A1', 'On fait une fête samedi.', '토요일에 파티를 해요.'],
+  ['le cadeau', '선물', '/lə ka.do/', 'seonmul', 'nom masculin (des cadeaux)', 'A1', 'Merci pour ce beau cadeau !', '멋진 선물 고마워!', '', ['cadeaux']],
+  ['l\'anniversaire', '생일; 기념일', '/la.ni.vɛʁ.sɛʁ/', 'saengil', 'nom masculin', 'A1', 'Joyeux anniversaire !', '생일 축하해!', '', ['anniversaire']],
+  ['la pharmacie', '약국', '/la faʁ.ma.si/', 'yakguk', 'nom féminin', 'A1', 'La pharmacie est en face de la poste.', '약국은 우체국 맞은편에 있어요.'],
+  ['le vélo', '자전거', '/lə ve.lo/', 'jajeongeo', 'nom masculin', 'A1', 'Je vais au travail à vélo.', '저는 자전거로 출근해요.'],
+  ['la cuisine', '부엌; 요리', '/la kɥi.zin/', 'bueok; yori', 'nom féminin', 'A1', 'J\'adore la cuisine coréenne.', '저는 한국 요리를 정말 좋아해요.', 'Faire la cuisine = 요리하다.']
 ]
 
 export const DICTIONARY = RAW.map(([fr, ko, ipa, rom, pos, level, exFr, exKo, note = '', forms = [], koAlt = []]) => ({
